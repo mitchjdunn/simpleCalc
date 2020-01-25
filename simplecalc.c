@@ -6,7 +6,7 @@
 #include"simplecalc.h"
 
 int main (int argc, char **argv) {
-	char *cmd = NULL, *arg1 = NULL,*arg2 = NULL;
+	char *cmd = NULL, *arg1 = NULL,*arg2 = NULL, *line = NULL;
 	size_t lineLength = 1;//???
 	FILE *filep;
 	if (argc == 3) {
@@ -16,17 +16,15 @@ int main (int argc, char **argv) {
 			return 1;
 		}
 		filep = fopen(argv[2], "r");
-		// TODO one liner
-		getline(&cmd,&lineLength, filep);
-		cmd[strcspn(cmd, "\n")] = 0;
-		getline(&arg1,&lineLength, filep);
-		arg1[strcspn(arg1, "\n")] = 0;
-		getline(&arg2,&lineLength, filep);
-		arg2[strcspn(arg2, "\n")] = 0;
+		getline(&line,&lineLength, filep);
+
+        cmd = strtok(line, " ");
+        arg1 = strtok(NULL, " ");
+        arg2 = strtok(NULL, " ");
 
 	}else if(argc == 4) {
-		cmd = argv[1]; 
-		arg1 = argv[2]; 
+		cmd = argv[1];
+		arg1 = argv[2];
 		arg2 = argv[3];
 	} else {
 		printHelp();
@@ -61,7 +59,6 @@ double add(double num1, double num2) {
 double sub(double num1, double num2) {
 	return num1 - num2;
 }
-
 double divide(double numerator, double denominator) {
 	if (denominator == 0) {
 		return INFINITY;
